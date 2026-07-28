@@ -21,20 +21,21 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "کاربر"
         verbose_name_plural = "کاربران"
+
+    # deleted users
+    class delete(self,*args ,**kwargs):
+        self.is_active = False 
+        self.save()
+
         
     def __str__(self):
-        return f'{self.get_full_name or self.username} ({self.get_role_display})'
+        return f'{self.get_full_name() or self.username} ({self.get_role_display()})'
     
-# deleted users
-class delete(self,*args ,**kwargs):
-    self.is_active = False 
-    self.save()
-
     
 # transactions category
 class Category(models.Model):
 
-    class CategoryType(models.CharField):
+    class CategoryType(models.TextChoices):
         INCOME= 'INCOME', 'درآمد'
         EXPENSES= 'EXPENSES' , 'هزینه'
         Name=models.CharField(
@@ -42,22 +43,23 @@ class Category(models.Model):
             verbose_name='نام دسته بندی'
         )
 
-        type=models.CharField(
+    type=models.CharField(
             max_length=12,
             choices = CategoryType.choices,
             verbose_name='نوع دسته بندی'   
-        )
+    )
 
-        description= models.CharField(
+    description= models.CharField(
             max_length= 255,
             blank= True,
             null= True,
             verbose_name='توضیحات کوتاه'
-        )
-        is_active = models.BooleanField(
+    )
+
+    is_active = models.BooleanField(
             default= True,
             verbose_name='فعال'
-        )
+    )
     class Meta:
         verbose_name = 'دسته بندی'
         verbose_name_plural= 'دسته بندی ها'
@@ -145,7 +147,7 @@ class Transaction(models.Model):
     class Meta:
         verbose_name = "تراکنش"
         verbose_name_plural = "تراکنش‌ها"
-        ordering = ['-date', '-created_at']
+        ordering = ['-date', '-created_time']
 
     def __str__(self):
         return f"{self.title} | {self.amount} | {self.get_type_display()}"
