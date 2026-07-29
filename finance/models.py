@@ -123,7 +123,7 @@ class Transaction(models.Model):
         verbose_name='تاریخ تراکنش'
     )
 
-    description = models.TextField(
+    descriptions = models.TextField(
         blank=True,
         null=True,
         verbose_name='توضیحات تکمیلی'
